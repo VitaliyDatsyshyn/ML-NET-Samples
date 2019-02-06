@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.ML;
 using Microsoft.ML.Core.Data;
 using Microsoft.ML.Data;
+using Microsoft.Data.DataView;
 
 namespace SentimentAnalysis
 {

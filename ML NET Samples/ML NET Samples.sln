@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SentimentAnalysis", "Sentim
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitHubIssueClassification", "IssueClassification\GitHubIssueClassification.csproj", "{2DAF332A-1114-4B24-BE13-C290E1AF5A7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLNETTemplateFromVS", "MLNETConsoleApp1\MLNETTemplateFromVS.csproj", "{F47C6527-58E8-4E85-86CE-B7FECAD7AB00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNETTemplateFromVS", "MLNETConsoleApp1\MLNETTemplateFromVS.csproj", "{F47C6527-58E8-4E85-86CE-B7FECAD7AB00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiFarePrediction", "TaxiFarePrediction\TaxiFarePrediction.csproj", "{F09FE021-0CFC-4570-8157-BBAAF8D46F18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{F47C6527-58E8-4E85-86CE-B7FECAD7AB00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F47C6527-58E8-4E85-86CE-B7FECAD7AB00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F47C6527-58E8-4E85-86CE-B7FECAD7AB00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F09FE021-0CFC-4570-8157-BBAAF8D46F18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F09FE021-0CFC-4570-8157-BBAAF8D46F18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F09FE021-0CFC-4570-8157-BBAAF8D46F18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F09FE021-0CFC-4570-8157-BBAAF8D46F18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

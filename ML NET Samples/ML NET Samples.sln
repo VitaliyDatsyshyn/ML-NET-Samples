@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNETTemplateFromVS", "MLNE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiFarePrediction", "TaxiFarePrediction\TaxiFarePrediction.csproj", "{F09FE021-0CFC-4570-8157-BBAAF8D46F18}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IrishFlowerClustering", "IrishFlowerClustering\IrishFlowerClustering.csproj", "{1C735898-F40B-432A-B0DC-C533C59BADDF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{F09FE021-0CFC-4570-8157-BBAAF8D46F18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F09FE021-0CFC-4570-8157-BBAAF8D46F18}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F09FE021-0CFC-4570-8157-BBAAF8D46F18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C735898-F40B-432A-B0DC-C533C59BADDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C735898-F40B-432A-B0DC-C533C59BADDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C735898-F40B-432A-B0DC-C533C59BADDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C735898-F40B-432A-B0DC-C533C59BADDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -82,6 +82,8 @@ namespace TaxiFarePrediction
             {
                 mlContext.Model.Save(model, fs);
             }
+
+            Console.WriteLine("The model is saved to {0}", _modelPath);
         }
 
         /// <summary>

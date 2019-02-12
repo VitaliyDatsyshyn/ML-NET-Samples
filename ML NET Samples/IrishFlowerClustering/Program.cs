@@ -2,6 +2,7 @@
 using System.IO;
 using Microsoft.ML;
 using Microsoft.ML.Data;
+using Microsoft.Data.DataView;
 
 namespace IrishFlowerClustering
 {
@@ -14,9 +15,9 @@ namespace IrishFlowerClustering
         {
             var mlContext = new MLContext(seed: 0);
 
-            TextLoader textLoader = mlContext.Data.CreateTextReader(new TextLoader.Arguments()
+            TextLoader textLoader = mlContext.Data.CreateTextLoader(new TextLoader.Arguments()
             {
-                Separator = ",",
+                Separators = new char[] { ',' },
                 HasHeader = false,
                 Column = new[]
                 {

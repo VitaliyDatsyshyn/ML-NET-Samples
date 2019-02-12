@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.ML;
 using Microsoft.ML.Core.Data;
 using Microsoft.ML.Data;
+using Microsoft.Data.DataView;
 
 namespace SentimentAnalysis
 {
@@ -19,15 +20,16 @@ namespace SentimentAnalysis
         {
             MLContext mlContext = new MLContext(seed: 0);
 
-            _textLoader = mlContext.Data.CreateTextReader(new TextLoader.Arguments()
+            _textLoader = mlContext.Data.CreateTextLoader(new TextLoader.Arguments()
             {
-                Separator = "tab",
+                Separators = new char[] { '\t' },
                 HasHeader = true,
                 Column = new[]
                                                            {
                                                                 new TextLoader.Column("Label", DataKind.Bool, 0),
                                                                 new TextLoader.Column("SentimentText", DataKind.Text, 1)
-                                                           }
+                                                           },
+
             }
             );
 
@@ -57,7 +59,7 @@ namespace SentimentAnalysis
 
             Console.WriteLine("=============== Create and Train the Model ===============");
 
-            var pipeline = mlContext.Transforms.Text.FeaturizeText("SentimentText", "Features")                                    // Extract and transform the data
+            var pipeline = mlContext.Transforms.Text.FeaturizeText(inputColumnName: "SentimentText", outputColumnName: "Features")                                    // Extract and transform the data
                 .Append(mlContext.BinaryClassification.Trainers.FastTree(numLeaves: 40, numTrees: 40, minDatapointsInLeaves: 20)); // Choose a learning algorithm
 
             Console.WriteLine("=============== End of training ===============");
@@ -171,11 +173,11 @@ namespace SentimentAnalysis
             }
 
             // Create prediction engine
-            var sentimentStreamingDataView = mlContext.CreateStreamingDataView(sentiments);
+            var sentimentStreamingDataView = mlContext.Data.ReadFromEnumerable(sentiments);
             var predictions = loadedModel.Transform(sentimentStreamingDataView);
 
             // Use the model to predict whether comment data is toxit (1) or nice (0)
-            var predictedResults = predictions.AsEnumerable<SentimentPrediction>(mlContext, reuseRowObject: false);
+            var predictedResults = mlContext.CreateEnumerable<SentimentPrediction>(predictions, reuseRowObject: false);
 
             Console.WriteLine();
             Console.WriteLine("=============== Prediction Test of loaded model with a multiple samples ===============");

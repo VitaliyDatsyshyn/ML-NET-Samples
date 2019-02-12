@@ -4,8 +4,8 @@ using System.Linq;
 using Microsoft.ML;
 using Microsoft.ML.Core.Data;
 using Microsoft.ML.Data;
-using Microsoft.ML.Trainers;
 using Microsoft.ML.Transforms.Conversions;
+using Microsoft.Data.DataView;
 
 namespace GitHubIssueClassification
 {
@@ -25,7 +25,7 @@ namespace GitHubIssueClassification
         {
             _mlContext = new MLContext(seed: 0);
 
-            _trainingDataView = _mlContext.Data.CreateTextReader<GitHubIssue>(hasHeader: true).Read(_trainDataPath);
+            _trainingDataView = _mlContext.Data.CreateTextLoader<GitHubIssue>(hasHeader: true).Read(_trainDataPath);
 
             var pipeline = ProcessData();
 
@@ -42,9 +42,9 @@ namespace GitHubIssueClassification
         /// <returns> The processing pipeline </returns>
         public static EstimatorChain<ITransformer> ProcessData()
         {
-            var pipeline = _mlContext.Transforms.Conversion.MapValueToKey("Area", "Label")  // By default, the values in Label column are considered as correct values to be predicted, so we Area column into Label column.
-                .Append(_mlContext.Transforms.Text.FeaturizeText("Title", "TitleFeaturized"))             // Featurizing the text (Title and Description) columns into
-                .Append(_mlContext.Transforms.Text.FeaturizeText("Description", "DescriptionFeaturized")) // a numeric vector which is used by the ML algorithm.
+            var pipeline = _mlContext.Transforms.Conversion.MapValueToKey(inputColumnName: "Area", outputColumnName: "Label")  // By default, the values in Label column are considered as correct values to be predicted, so we Area column into Label column.
+                .Append(_mlContext.Transforms.Text.FeaturizeText(inputColumnName: "Title", outputColumnName:"TitleFeaturized"))             // Featurizing the text (Title and Description) columns into
+                .Append(_mlContext.Transforms.Text.FeaturizeText(inputColumnName: "Description", outputColumnName: "DescriptionFeaturized")) // a numeric vector which is used by the ML algorithm.
                 .Append(_mlContext.Transforms.Concatenate("Features", "TitleFeaturized", "DescriptionFeaturized")) // Combines all of the feature columns into the Features column, because, by default, learning algorithm processes features only from the Features column.
                 .AppendCacheCheckpoint(_mlContext); // Cache the DataView so when we iterate over the data multiple times using the cache might get better performance.
 
@@ -63,12 +63,8 @@ namespace GitHubIssueClassification
         /// <returns> The model </returns>
         public static EstimatorChain<KeyToValueMappingTransformer> BuildAndTrainModel(IDataView trainingDataView, EstimatorChain<ITransformer> pipeline)
         {
-            // Choose a learning algorithm
-            var trainer = new SdcaMultiClassTrainer(_mlContext, DefaultColumnNames.Label, DefaultColumnNames.Features); // This object is appanded to the pipeline and accepts the featurized
-                                                                                                                        // Title and Description (Features) and the Label input parameters
-                                                                                                                        // from the historic data.
 
-            var trainingPipeline = pipeline.Append(trainer) // Append learning alogoritm to the pipeline
+            var trainingPipeline = pipeline.Append(_mlContext.MulticlassClassification.Trainers.StochasticDualCoordinateAscent("Label", "Features")) // Append learning alogoritm to the pipeline
                 .Append(_mlContext.Transforms.Conversion.MapKeyToValue("PredictedLabel")); // Map the Label to the value to return to its ordinal readable state.
 
             _trainedModel = trainingPipeline.Fit(trainingDataView); // Returns a model to use for predictions.
@@ -97,7 +93,7 @@ namespace GitHubIssueClassification
         /// </summary>
         public static void Evaluate()
         {
-            var testDataView = _mlContext.Data.CreateTextReader<GitHubIssue>(hasHeader: true).Read(_testDataPath);
+            var testDataView = _mlContext.Data.CreateTextLoader<GitHubIssue>(hasHeader: true).Read(_testDataPath);
 
             var testMetrics = _mlContext.MulticlassClassification.Evaluate(_trainedModel.Transform(testDataView)); // Computes the quality metrics.
 

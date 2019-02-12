@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using Microsoft.ML;
 using Microsoft.ML.Data;
+using Microsoft.Data.DataView;
 
 namespace MLNETConsoleApp1
 {
@@ -18,12 +19,12 @@ namespace MLNETConsoleApp1
             var mlContext = new MLContext();
 
             // 1a. Load the training data.
-            var reader = mlContext.Data.CreateTextReader<SentimentData>(hasHeader: true);
+            var reader = mlContext.Data.CreateTextLoader<SentimentData>(hasHeader: true);
             IDataView trainingDataView = reader.Read(@"Data\wikipedia-detox-250-line-data.tsv");
 
             // 2. Create a pipeline to prepare your data, pick your features and apply a machine learning algorithm.
             // 2a. Featurize the text into a numeric vector that can be used by the machine learning algorithm.
-            var pipeline = mlContext.Transforms.Text.FeaturizeText("Text", "Features")
+            var pipeline = mlContext.Transforms.Text.FeaturizeText(inputColumnName: "Text", outputColumnName: "Features")
                     .Append(mlContext.BinaryClassification.Trainers.StochasticDualCoordinateAscent("Label", "Features"));
 
             // 3. Get a model by training the pipeline that was built.

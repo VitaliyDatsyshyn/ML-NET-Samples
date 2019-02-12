@@ -3,6 +3,7 @@ using System.IO;
 using Microsoft.ML;
 using Microsoft.ML.Core.Data;
 using Microsoft.ML.Data;
+using Microsoft.Data.DataView;
 
 namespace TaxiFarePrediction
 {
@@ -18,9 +19,9 @@ namespace TaxiFarePrediction
         {
             MLContext mlContext = new MLContext(seed: 0);
 
-            _textLoader = mlContext.Data.CreateTextReader(new TextLoader.Arguments()
+            _textLoader = mlContext.Data.CreateTextLoader(new TextLoader.Arguments()
             {
-                Separator = ",",
+                Separators = new char[] { ',' },
                 HasHeader = true,
                 Column = new[]
                 {
@@ -53,7 +54,7 @@ namespace TaxiFarePrediction
         {
             IDataView dataView = _textLoader.Read(dataPath);
 
-            var pipeline = mlContext.Transforms.CopyColumns("FareAmount", "Label")
+            var pipeline = mlContext.Transforms.CopyColumns(inputColumnName: "FareAmount", outputColumnName: "Label")
                 .Append(mlContext.Transforms.Categorical.OneHotEncoding("VendorId")) // Transforms text to numeric value
                 .Append(mlContext.Transforms.Categorical.OneHotEncoding("RateCode"))
                 .Append(mlContext.Transforms.Categorical.OneHotEncoding("PaymentType"))

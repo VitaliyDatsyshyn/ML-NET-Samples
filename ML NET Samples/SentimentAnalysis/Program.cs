@@ -51,7 +51,7 @@ namespace SentimentAnalysis
         /// This method:
         /// - extracts and transforms the data
         /// - trains the model
-        /// - predicts sentiment based on test data
+        /// - predicts sentiment based on training data
         /// </summary>
         /// <param name="mlContext"> MLContext object </param>
         /// <param name="splitTrainSet"> Dataset for training </param>

@@ -35,25 +35,39 @@ namespace IrishFlowerClustering
 
             var model = pipeline.Fit(dataView);
 
-            using(var fs = new FileStream(_modelPath, FileMode.Create, FileAccess.Write, FileShare.Write))
-            {
-                mlContext.Model.Save(model, fs);
-            }
+            //using(var fs = new FileStream(_modelPath, FileMode.Create, FileAccess.Write, FileShare.Write))
+            //{
+            //    mlContext.Model.Save(model, fs);
+            //}
+            
+            
 
-            var predictor = model.CreatePredictionEngine<IrisData, ClusterPrediction>(mlContext);
+            double x1 = 5.3;
+            double x2 = 3.1;
+            double x3 = 1.6;
+            double x4 = 0.3;
+
 
             var setosa = new IrisData()
             {
-                SepalLength = 0.1f,
-                SepalWidth = 0.5f,
-                PetalLength = 0.4f,
-                PetalWidth = 0.2f
+                SepalLength = (float) x1,
+                SepalWidth = (float)x2,
+                PetalLength = (float)x3,
+                PetalWidth = (float)x4
             };
 
+            Console.WriteLine(setosa.SepalLength);
+            Console.WriteLine(setosa.SepalWidth);
+            Console.WriteLine(setosa.PetalLength);
+            Console.WriteLine(setosa.PetalWidth);
+
+            var predictor = model.CreatePredictionEngine<IrisData, ClusterPrediction>(mlContext);
             var prediction = predictor.Predict(setosa);
 
             Console.WriteLine($"Cluster ID: {prediction.PredictedClusterId}");
             Console.WriteLine($"Distances: {string.Join(" ", prediction.Distances)}");
+
+            
         }
     }
 }

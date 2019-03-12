@@ -47,7 +47,7 @@ namespace GitHubIssueClassification
                 .Append(mlContext.Transforms.Conversion.MapValueToKey(outputColumnName: "Label", inputColumnName: "Area"))
                 .Append(mlContext.MulticlassClassification.Trainers.StochasticDualCoordinateAscent()) // By default, the values in Label column are considered as correct values to be predicted, so we Area column into Label column.
                 .Append(mlContext.Transforms.Conversion.MapKeyToValue("PredictedLabel")); // Map the Label to the value to return to its ordinal readable state.
-
+            
             ITransformer model = pipeline.Fit(trainData);
 
             return model;
@@ -118,9 +118,7 @@ namespace GitHubIssueClassification
 
             Console.WriteLine($"\n=============== Single Prediction - Result: {predictionResults.Area} ===============\n");
         }
-
-
-
+               
         /// <summary>
         /// This method:
         /// - creates batch test data

@@ -4,23 +4,26 @@ namespace IrishFlowerClustering
 {
     public class IrisData
     {
-        [Column("0")]
+        [LoadColumn(0)]
         public float SepalLength;
 
-        [Column("1")]
+        [LoadColumn(1)]
         public float SepalWidth;
 
-        [Column("2")]
+        [LoadColumn(2)]
         public float PetalLength;
 
-        [Column("3")]
+        [LoadColumn(3)]
         public float PetalWidth;
+
+        [LoadColumn(4)]
+        public string FlowerType;
     }
 
     public class ClusterPrediction
     {
         [ColumnName("PredictedLabel")]
-        public uint PredictedClusterId; // contains the ID of the predicted cluster
+        public string PredictedCluster; 
 
         [ColumnName("Score")]
         public float[] Distances; // contains an array with squared Euclidean distances to the cluster centroids 

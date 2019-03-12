@@ -23,7 +23,7 @@ namespace IrishFlowerClustering
     public class ClusterPrediction
     {
         [ColumnName("PredictedLabel")]
-        public string PredictedCluster; 
+        public uint PredictedCluster; 
 
         [ColumnName("Score")]
         public float[] Distances; // contains an array with squared Euclidean distances to the cluster centroids 

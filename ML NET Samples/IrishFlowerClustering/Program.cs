@@ -16,7 +16,7 @@ namespace IrishFlowerClustering
         {
             var mlContext = new MLContext();
 
-            IDataView trainData = mlContext.Data.LoadFromTextFile<IrisData>(_dataPath);
+            IDataView trainData = mlContext.Data.LoadFromTextFile<IrisData>(_dataPath, separatorChar: ',');
 
             ITransformer model = BuildAndTrainModel(mlContext, trainData);
 
@@ -38,8 +38,7 @@ namespace IrishFlowerClustering
         {
             var pipeline = mlContext.Transforms.Conversion.MapValueToKey(outputColumnName: "Label", inputColumnName: "FlowerType")
                 .Append(mlContext.Transforms.Concatenate("Features", "SepalLength", "SepalWidth", "PetalLength", "PetalWidth"))
-                .Append(mlContext.Clustering.Trainers.KMeans(clustersCount: 3))
-                .Append(mlContext.Transforms.Conversion.MapKeyToValue(outputColumnName: "PredictedLabel", inputColumnName: "Label"));
+                .Append(mlContext.Clustering.Trainers.KMeans(clustersCount: 3));
 
 
             var model = pipeline.Fit(trainData);
@@ -137,7 +136,8 @@ namespace IrishFlowerClustering
 
             foreach (var item in predictedResults)
             {
-                Console.WriteLine($"\n=============== Result: {item.PredictedCluster} ===============\n");
+                Console.WriteLine($"Predicted iris type: {item.PredictedCluster}");
+                Console.WriteLine($"Distances: {string.Join(" ", item.Distances)}");
             }
         }
     }
